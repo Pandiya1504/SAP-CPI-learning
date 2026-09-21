@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP CPI Prerequisites Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            color: #2c3e50;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .cover {
+            background: linear-gradient(135deg, #0070f3, #004a9f);
+            color: white;
+            text-align: center;
+            padding: 80px 40px;
+            page-break-after: always;
+        }
+        .cover h1 { font-size: 42px; margin-bottom: 16px; }
+        .cover h2 { font-size: 22px; font-weight: 300; margin-bottom: 30px; opacity: 0.9; }
+        .cover .subtitle {
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .cover .topics-list {
+            margin-top: 40px;
+            display: inline-block;
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            padding: 20px 40px;
+            border-radius: 12px;
+        }
+        .cover .topics-list li {
+            list-style: none;
+            padding: 4px 0;
+            font-size: 15px;
+        }
+        .cover .topics-list li::before {
+            content: "✦ ";
+            opacity: 0.7;
+        }
+        .toc {
+            max-width: 860px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .toc h2 {
+            font-size: 24px;
+            color: #0070f3;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e8f0fe;
+            padding-bottom: 10px;
+        }
+        .toc ol { padding-left: 20px; }
+        .toc li {
+            padding: 6px 0;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        .toc li span {
+            color: #888;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .topic-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            page-break-inside: avoid;
+        }
+        .topic-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+        .topic-number {
+            background: linear-gradient(135deg, #0070f3, #004a9f);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 16px;
+        }
+        .topic-title h2 { font-size: 24px; color: #0070f3; }
+        .topic-title p { color: #666; font-size: 13px; margin-top: 2px; }
+        h3 {
+            font-size: 17px;
+            color: #004a9f;
+            margin: 24px 0 10px 0;
+            padding-left: 10px;
+            border-left: 3px solid #0070f3;
+        }
+        p { margin-bottom: 12px; color: #444; }
+        .analogy {
+            background: #fff8e1;
+            border-left: 4px solid #f59e0b;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-style: italic;
+            color: #555;
+        }
+        .analogy strong { color: #d97706; font-style: normal; }
+        .info-box {
+            background: #e8f4fd;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            color: #1a5f8a;
+        }
+        .info-box strong { color: #0070f3; }
+        .warning-box {
+            background: #fef3cd;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            color: #7c5e10;
+        }
+        .cpi-box {
+            background: #f0fff4;
+            border: 1px solid #68d391;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            color: #22543d;
+        }
+        .cpi-box strong { color: #276749; }
+        pre, code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+        }
+        pre {
+            background: #1e2a3a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 14px 0;
+            line-height: 1.6;
+        }
+        .tag { color: #7dd3fc; }
+        .attr { color: #fbbf24; }
+        .val { color: #86efac; }
+        .comment { color: #94a3b8; font-style: italic; }
+        .key { color: #fbbf24; }
+        .string { color: #86efac; }
+        .number { color: #fb7185; }
+        .bool { color: #c084fc; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        th {
+            background: #0070f3;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #444;
+        }
+        tr:nth-child(even) td { background: #f8faff; }
+        tr:hover td { background: #eef4ff; }
+        .flow-diagram {
+            background: #f8faff;
+            border: 1px solid #c3d9ff;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #2c3e50;
+            margin: 16px 0;
+            white-space: pre;
+            line-height: 1.8;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #e8f0fe, #f0f4ff);
+            border: 1px solid #c3d9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+        .summary-box h3 {
+            border-left: 3px solid #0070f3;
+            color: #0070f3;
+            margin-top: 0;
+        }
+        .summary-box ul { padding-left: 20px; }
+        .summary-box li { padding: 3px 0; color: #444; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-yellow { background: #fef9c3; color: #854d0e; }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 13px;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+    <h1>SAP CPI Prerequisites</h1>
+    <h2>A Complete Beginner-Friendly Guide</h2>
+    <div class="subtitle">Everything you need to know before learning SAP Integration Suite</div>
+    <div class="topics-list">
+        <ul>
+            <li>Topic 1 — Integration Concepts</li>
+            <li>Topic 2 — XML</li>
+            <li>Topic 3 — JSON</li>
+            <li>Topic 4 — REST and HTTP</li>
+            <li>Topic 5 — SOAP and WSDL</li>
+            <li>Topic 6 — XPath</li>
+            <li>Topic 7 — XSLT</li>
+            <li>Topic 8 — Groovy Scripting</li>
+            <li>Topic 9 — SAP BTP Basics</li>
+            <li>Topic 10 — OData Basics</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+        <li>Integration Concepts <span>— Middleware, APIs, Sync vs Async</span></li>
+        <li>XML <span>— Tags, Elements, Attributes, Namespaces</span></li>
+        <li>JSON <span>— Key-Value, Objects, Arrays, Data Types</span></li>
+        <li>REST and HTTP <span>— Methods, Status Codes, URLs</span></li>
+        <li>SOAP and WSDL <span>— Envelope, Body, Fault, Service Contract</span></li>
+        <li>XPath <span>— Navigating and Extracting XML Data</span></li>
+        <li>XSLT <span>— Transforming XML to XML</span></li>
+        <li>Groovy Scripting <span>— Custom Logic inside iFlows</span></li>
+        <li>SAP BTP Basics <span>— Platform, Cockpit, Subaccounts</span></li>
+        <li>OData Basics <span>— SAP REST Standard for S/4HANA</span></li>
+    </ol>
+</div>
+
+<div class="container">
+
+<!-- TOPIC 1 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">1</div>
+        <div class="topic-title">
+            <h2>Integration Concepts</h2>
+            <p>The foundation of everything in SAP CPI</p>
+        </div>
+    </div>
+
+    <h3>What is Integration?</h3>
+    <p>In the real world, companies use many different software systems from different vendors. These systems do not automatically communicate with each other. Integration is the process of making these systems exchange data automatically without human intervention.</p>
+
+    <div class="analogy">
+        <strong>Real World Example:</strong> A company uses Salesforce for sales, SAP S/4HANA for finance, and Workday for HR. When a new employee joins, their data needs to go into all three systems. Without integration, someone manually enters data three times — slow and error-prone. With integration, entering data once automatically updates all systems.
+    </div>
+
+    <h3>What is Middleware?</h3>
+    <p>Middleware is a software system that sits between two or more systems and manages communication between them. SAP CPI is a middleware platform.</p>
+
+    <div class="flow-diagram">Without Middleware (Point-to-Point):
+Salesforce ←——→ SAP S/4HANA
+Salesforce ←——→ Workday
+SAP S/4HANA ←——→ Workday
+= Many direct connections, hard to manage
+
+With Middleware (Hub and Spoke):
+Salesforce ——→ [ SAP CPI ] ←—— SAP S/4HANA
+                    ↑
+                 Workday
+= All systems connect to one central hub</div>
+
+    <h3>What is a Message?</h3>
+    <p>When systems communicate through CPI, they exchange messages. Every message has three parts:</p>
+    <table>
+        <tr><th>Part</th><th>Description</th><th>Example</th></tr>
+        <tr><td><strong>Header</strong></td><td>Metadata about the message</td><td>Content-Type, sender info, timestamp</td></tr>
+        <tr><td><strong>Body</strong></td><td>The actual data payload</td><td>Order details, customer record</td></tr>
+        <tr><td><strong>Attachment</strong></td><td>Optional files attached</td><td>PDF invoice, image file</td></tr>
+    </table>
+
+    <h3>Synchronous vs Asynchronous</h3>
+    <table>
+        <tr><th>Type</th><th>Behavior</th><th>Example</th></tr>
+        <tr><td><strong>Synchronous</strong></td><td>Sender sends a message and waits for a response before continuing</td><td>Like a phone call — you wait for the other person to respond</td></tr>
+        <tr><td><strong>Asynchronous</strong></td><td>Sender sends a message once and moves on without waiting</td><td>Like sending an email — you send it and continue your work</td></tr>
+    </table>
+
+    <h3>What is an API?</h3>
+    <p>An API (Application Programming Interface) is a defined way for one system to expose its data or functions so other systems can use them.</p>
+    <div class="analogy">
+        <strong>Analogy:</strong> A restaurant menu is an API. You (the client) look at the menu and order. The kitchen (the server) prepares your food and brings it out. You do not go into the kitchen directly — you use the defined interface (the menu).
+    </div>
+
+    <div class="cpi-box">
+        <strong>Why This Matters in CPI:</strong> Every iFlow you build receives a message from a source system, processes it, and sends it to a target system. Understanding messages, middleware, and APIs is the foundation of every integration scenario.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>Integration = making systems talk automatically</li>
+            <li>Middleware = central hub managing all system communication</li>
+            <li>Message = Header + Body + Attachment</li>
+            <li>Synchronous = sender waits for response</li>
+            <li>Asynchronous = sender does not wait</li>
+            <li>API = a defined interface to access system data or functions</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 2 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">2</div>
+        <div class="topic-title">
+            <h2>XML</h2>
+            <p>eXtensible Markup Language — the primary data format in SAP systems</p>
+        </div>
+    </div>
+
+    <h3>What is XML?</h3>
+    <p>XML (eXtensible Markup Language) is a text-based format for storing and transporting structured data. It uses tags to describe and organize data — similar to HTML but designed for data, not display.</p>
+
+    <h3>Basic Structure</h3>
+    <pre><span class="comment">&lt;!-- XML Declaration (optional but recommended) --&gt;</span>
+<span class="tag">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+
+<span class="tag">&lt;order&gt;</span>                          <span class="comment">&lt;!-- Root Element --&gt;</span>
+    <span class="tag">&lt;orderId&gt;</span>1001<span class="tag">&lt;/orderId&gt;</span>
+    <span class="tag">&lt;customer&gt;</span>                    <span class="comment">&lt;!-- Parent Element --&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Ahmed<span class="tag">&lt;/name&gt;</span>          <span class="comment">&lt;!-- Child Element --&gt;</span>
+        <span class="tag">&lt;city&gt;</span>Riyadh<span class="tag">&lt;/city&gt;</span>
+    <span class="tag">&lt;/customer&gt;</span>
+    <span class="tag">&lt;amount&gt;</span>5000<span class="tag">&lt;/amount&gt;</span>
+<span class="tag">&lt;/order&gt;</span></pre>
+
+    <h3>XML Rules</h3>
+    <ul style="padding-left:20px; color:#444;">
+        <li style="padding:4px 0;">Every opening tag must have a closing tag: <code>&lt;name&gt;Ahmed&lt;/name&gt;</code></li>
+        <li style="padding:4px 0;">Tags are case sensitive: <code>&lt;Name&gt;</code> and <code>&lt;name&gt;</code> are different</li>
+        <li style="padding:4px 0;">There must be exactly one root element wrapping everything</li>
+        <li style="padding:4px 0;">Elements can be nested inside each other</li>
+        <li style="padding:4px 0;">Attribute values must be in quotes</li>
+    </ul>
+
+    <h3>Attributes</h3>
+    <p>Attributes provide extra information about an element and are written inside the opening tag.</p>
+    <pre><span class="tag">&lt;order</span> <span class="attr">type</span>=<span class="val">"sales"</span> <span class="attr">status</span>=<span class="val">"pending"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;amount</span> <span class="attr">currency</span>=<span class="val">"SAR"</span><span class="tag">&gt;</span>5000<span class="tag">&lt;/amount&gt;</span>
+<span class="tag">&lt;/order&gt;</span></pre>
+
+    <h3>Real World Example — Invoice XML</h3>
+    <pre><span class="tag">&lt;invoice&gt;</span>
+    <span class="tag">&lt;invoiceId&gt;</span>INV-2001<span class="tag">&lt;/invoiceId&gt;</span>
+    <span class="tag">&lt;vendor&gt;</span>
+        <span class="tag">&lt;vendorName&gt;</span>Al Rajhi Trading<span class="tag">&lt;/vendorName&gt;</span>
+        <span class="tag">&lt;country&gt;</span>Saudi Arabia<span class="tag">&lt;/country&gt;</span>
+    <span class="tag">&lt;/vendor&gt;</span>
+    <span class="tag">&lt;items&gt;</span>
+        <span class="tag">&lt;item</span> <span class="attr">type</span>=<span class="val">"product"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;itemName&gt;</span>Laptop<span class="tag">&lt;/itemName&gt;</span>
+            <span class="tag">&lt;quantity&gt;</span>3<span class="tag">&lt;/quantity&gt;</span>
+            <span class="tag">&lt;price</span> <span class="attr">currency</span>=<span class="val">"SAR"</span><span class="tag">&gt;</span>4500<span class="tag">&lt;/price&gt;</span>
+        <span class="tag">&lt;/item&gt;</span>
+    <span class="tag">&lt;/items&gt;</span>
+    <span class="tag">&lt;totalAmount&gt;</span>13500<span class="tag">&lt;/totalAmount&gt;</span>
+<span class="tag">&lt;/invoice&gt;</span></pre>
+
+    <h3>Namespaces</h3>
+    <p>Namespaces prevent naming conflicts when two XML documents are merged. You will see them frequently in CPI message mapping.</p>
+    <pre><span class="tag">&lt;ns0:order</span> <span class="attr">xmlns:ns0</span>=<span class="val">"http://company.com/sales"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;ns0:orderId&gt;</span>1001<span class="tag">&lt;/ns0:orderId&gt;</span>
+<span class="tag">&lt;/ns0:order&gt;</span></pre>
+
+    <div class="cpi-box">
+        <strong>Why XML Matters in CPI:</strong> SAP S/4HANA, IDocs, and SOAP messages all use XML. Message mapping in CPI works with XML structure. XPath and XSLT (covered later) both operate on XML.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>XML stores structured data using opening and closing tags</li>
+            <li>Root element is the single outermost tag</li>
+            <li>Elements can contain child elements (nesting)</li>
+            <li>Attributes add extra info inside the opening tag</li>
+            <li>Namespaces use prefixes like ns0: to avoid naming conflicts</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 3 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">3</div>
+        <div class="topic-title">
+            <h2>JSON</h2>
+            <p>JavaScript Object Notation — the data format of modern REST APIs</p>
+        </div>
+    </div>
+
+    <h3>What is JSON?</h3>
+    <p>JSON (JavaScript Object Notation) is a lightweight text format for storing and transporting data. It uses key-value pairs and is simpler and lighter than XML. It is the standard format for modern REST APIs.</p>
+
+    <h3>Basic Structure</h3>
+    <pre>{
+    <span class="key">"orderId"</span>: <span class="string">"1001"</span>,
+    <span class="key">"customer"</span>: {
+        <span class="key">"name"</span>: <span class="string">"Ahmed"</span>,
+        <span class="key">"city"</span>: <span class="string">"Riyadh"</span>
+    },
+    <span class="key">"amount"</span>: <span class="number">5000</span>
+}</pre>
+
+    <h3>Data Types in JSON</h3>
+    <pre>{
+    <span class="key">"name"</span>: <span class="string">"Ahmed"</span>,         <span class="comment">// String — text in double quotes</span>
+    <span class="key">"age"</span>: <span class="number">30</span>,              <span class="comment">// Number — no quotes</span>
+    <span class="key">"isActive"</span>: <span class="bool">true</span>,       <span class="comment">// Boolean — true or false</span>
+    <span class="key">"salary"</span>: <span class="number">9500.50</span>,      <span class="comment">// Decimal number</span>
+    <span class="key">"middleName"</span>: <span class="bool">null</span>       <span class="comment">// Null — no value</span>
+}</pre>
+
+    <h3>Arrays — Lists of Items</h3>
+    <p>Square brackets <code>[ ]</code> represent a list (array) of items.</p>
+    <pre>{
+    <span class="key">"invoice"</span>: {
+        <span class="key">"invoiceId"</span>: <span class="string">"INV-2001"</span>,
+        <span class="key">"items"</span>: [
+            {
+                <span class="key">"itemName"</span>: <span class="string">"Laptop"</span>,
+                <span class="key">"quantity"</span>: <span class="number">3</span>,
+                <span class="key">"price"</span>: <span class="number">4500</span>
+            },
+            {
+                <span class="key">"itemName"</span>: <span class="string">"Mouse"</span>,
+                <span class="key">"quantity"</span>: <span class="number">5</span>,
+                <span class="key">"price"</span>: <span class="number">150</span>
+            }
+        ],
+        <span class="key">"totalAmount"</span>: <span class="number">14250</span>
+    }
+}</pre>
+
+    <h3>JSON vs XML Comparison</h3>
+    <table>
+        <tr><th>Feature</th><th>XML</th><th>JSON</th></tr>
+        <tr><td>Format</td><td>Tags with opening/closing</td><td>Key-value pairs</td></tr>
+        <tr><td>Size</td><td>Heavier</td><td>Lighter</td></tr>
+        <tr><td>Readability</td><td>More verbose</td><td>Cleaner and simpler</td></tr>
+        <tr><td>Attributes</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Namespaces</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Used in</td><td>SOAP, SAP IDocs, legacy systems</td><td>REST APIs, modern systems</td></tr>
+    </table>
+
+    <div class="cpi-box">
+        <strong>Why JSON Matters in CPI:</strong> Modern third-party systems like Salesforce and ServiceNow send JSON. CPI can receive JSON, convert it to XML internally for processing, then send JSON back out. Groovy scripts inside CPI also read and manipulate JSON payloads.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>JSON stores data as key-value pairs</li>
+            <li>Objects are wrapped in curly braces { }</li>
+            <li>Arrays (lists) are wrapped in square brackets [ ]</li>
+            <li>Keys are always in double quotes</li>
+            <li>Value types: String, Number, Boolean, Null, Object, Array</li>
+            <li>JSON is lighter and simpler than XML</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 4 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">4</div>
+        <div class="topic-title">
+            <h2>REST and HTTP</h2>
+            <p>The communication protocol powering modern API integrations</p>
+        </div>
+    </div>
+
+    <h3>What is HTTP?</h3>
+    <p>HTTP (HyperText Transfer Protocol) is the set of rules used to send and receive data over the internet. Every time you open a website, your browser uses HTTP to communicate with the server. In CPI, HTTP is the foundation of all REST API calls between systems.</p>
+
+    <h3>HTTP Request Structure</h3>
+    <pre><span class="comment">// Every HTTP request has these parts:</span>
+
+METHOD   /resource/path   HTTP/1.1
+Host: api.company.com
+Content-Type: application/json
+Authorization: Bearer abc123token
+
+{
+    "body": "data goes here"
+}</pre>
+
+    <h3>HTTP Methods</h3>
+    <table>
+        <tr><th>Method</th><th>Purpose</th><th>Has Body?</th><th>Example</th></tr>
+        <tr><td><strong>GET</strong></td><td>Read / fetch data</td><td>No</td><td>Get a customer record</td></tr>
+        <tr><td><strong>POST</strong></td><td>Create new data</td><td>Yes</td><td>Create a new order</td></tr>
+        <tr><td><strong>PUT</strong></td><td>Update existing data</td><td>Yes</td><td>Update customer address</td></tr>
+        <tr><td><strong>DELETE</strong></td><td>Delete data</td><td>No</td><td>Delete an invoice</td></tr>
+    </table>
+
+    <h3>HTTP Status Codes</h3>
+    <p>After sending a request, the server returns a status code telling you what happened.</p>
+    <table>
+        <tr><th>Code</th><th>Meaning</th><th>Category</th></tr>
+        <tr><td><strong>200</strong></td><td>OK — request succeeded</td><td>Success</td></tr>
+        <tr><td><strong>201</strong></td><td>Created — new record created</td><td>Success</td></tr>
+        <tr><td><strong>400</strong></td><td>Bad Request — your request has an error</td><td>Client Error</td></tr>
+        <tr><td><strong>401</strong></td><td>Unauthorized — authentication failed</td><td>Client Error</td></tr>
+        <tr><td><strong>403</strong></td><td>Forbidden — no permission</td><td>Client Error</td></tr>
+        <tr><td><strong>404</strong></td><td>Not Found — resource does not exist</td><td>Client Error</td></tr>
+        <tr><td><strong>500</strong></td><td>Internal Server Error — server problem</td><td>Server Error</td></tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Simple Rule:</strong> 2xx = Success &nbsp;|&nbsp; 4xx = Your mistake (client side) &nbsp;|&nbsp; 5xx = Their mistake (server side)
+    </div>
+
+    <h3>What is REST?</h3>
+    <p>REST (Representational State Transfer) is a set of rules for building APIs using HTTP. A REST API exposes resources (data) through URLs and uses HTTP methods to interact with them.</p>
+
+    <h3>REST URL Structure</h3>
+    <pre>https://api.company.com/customers/1001
+│         │               │         │
+│         │               │         └── Record ID
+│         │               └── Resource (collection name)
+│         └── Server address
+└── Protocol</pre>
+
+    <h3>REST API Example — Orders</h3>
+    <table>
+        <tr><th>Action</th><th>Method</th><th>URL</th><th>Body</th></tr>
+        <tr><td>Get all orders</td><td>GET</td><td>/orders</td><td>None</td></tr>
+        <tr><td>Get one order</td><td>GET</td><td>/orders/1001</td><td>None</td></tr>
+        <tr><td>Create order</td><td>POST</td><td>/orders</td><td>Order data in JSON</td></tr>
+        <tr><td>Update order</td><td>PUT</td><td>/orders/1001</td><td>Updated data in JSON</td></tr>
+        <tr><td>Delete order</td><td>DELETE</td><td>/orders/1001</td><td>None</td></tr>
+    </table>
+
+    <div class="cpi-box">
+        <strong>Why REST and HTTP Matter in CPI:</strong> CPI has an HTTP Receiver adapter to call REST APIs. You configure the method (GET/POST/PUT/DELETE) inside the adapter. Status codes appear in CPI monitoring when integrations fail. HTTP headers like Content-Type and Authorization are set inside iFlows.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>HTTP is the protocol for sending requests and receiving responses</li>
+            <li>Four main methods: GET, POST, PUT, DELETE</li>
+            <li>Status codes: 2xx success, 4xx client error, 5xx server error</li>
+            <li>REST is a set of rules for building APIs using HTTP and URLs</li>
+            <li>REST URLs follow the pattern: host / resource / id</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 5 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">5</div>
+        <div class="topic-title">
+            <h2>SOAP and WSDL</h2>
+            <p>The enterprise messaging protocol used heavily in SAP systems</p>
+        </div>
+    </div>
+
+    <h3>What is SOAP?</h3>
+    <p>SOAP (Simple Object Access Protocol) is a messaging protocol for exchanging structured data between systems using XML. It is older than REST but still heavily used in SAP and enterprise banking systems.</p>
+
+    <h3>SOAP vs REST</h3>
+    <table>
+        <tr><th>Feature</th><th>SOAP</th><th>REST</th></tr>
+        <tr><td>Data Format</td><td>XML only</td><td>JSON or XML</td></tr>
+        <tr><td>Structure</td><td>Strict and defined</td><td>Flexible</td></tr>
+        <tr><td>Contract File</td><td>Requires WSDL</td><td>Optional</td></tr>
+        <tr><td>Speed</td><td>Heavier</td><td>Lighter</td></tr>
+        <tr><td>Used in</td><td>SAP, banks, legacy enterprise</td><td>Modern APIs, mobile, web</td></tr>
+    </table>
+
+    <h3>SOAP Message Structure</h3>
+    <pre><span class="tag">&lt;soap:Envelope</span> <span class="attr">xmlns:soap</span>=<span class="val">"http://schemas.xmlsoap.org/soap/envelope/"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;soap:Header&gt;</span>
+        <span class="comment">&lt;!-- Optional: Authentication, session tokens, routing info --&gt;</span>
+        <span class="tag">&lt;auth:token&gt;</span>abc123<span class="tag">&lt;/auth:token&gt;</span>
+    <span class="tag">&lt;/soap:Header&gt;</span>
+
+    <span class="tag">&lt;soap:Body&gt;</span>
+        <span class="comment">&lt;!-- Mandatory: The actual request data --&gt;</span>
+        <span class="tag">&lt;ord:CreateOrder&gt;</span>
+            <span class="tag">&lt;ord:customerId&gt;</span>C001<span class="tag">&lt;/ord:customerId&gt;</span>
+            <span class="tag">&lt;ord:product&gt;</span>Laptop<span class="tag">&lt;/ord:product&gt;</span>
+            <span class="tag">&lt;ord:quantity&gt;</span>2<span class="tag">&lt;/ord:quantity&gt;</span>
+        <span class="tag">&lt;/ord:CreateOrder&gt;</span>
+    <span class="tag">&lt;/soap:Body&gt;</span>
+
+<span class="tag">&lt;/soap:Envelope&gt;</span></pre>
+
+    <h3>SOAP Envelope Parts</h3>
+    <table>
+        <tr><th>Part</th><th>Mandatory</th><th>Purpose</th></tr>
+        <tr><td><strong>Envelope</strong></td><td>Yes</td><td>Outer wrapper for the entire SOAP message</td></tr>
+        <tr><td><strong>Header</strong></td><td>No</td><td>Authentication, session info, metadata</td></tr>
+        <tr><td><strong>Body</strong></td><td>Yes</td><td>The actual request or response data</td></tr>
+        <tr><td><strong>Fault</strong></td><td>No</td><td>Error details — appears in Body when an error occurs</td></tr>
+    </table>
+
+    <h3>SOAP Fault — Error Response</h3>
+    <pre><span class="tag">&lt;soap:Envelope&gt;</span>
+    <span class="tag">&lt;soap:Body&gt;</span>
+        <span class="tag">&lt;soap:Fault&gt;</span>
+            <span class="tag">&lt;faultcode&gt;</span>soap:Client<span class="tag">&lt;/faultcode&gt;</span>
+            <span class="tag">&lt;faultstring&gt;</span>Invalid customer ID provided<span class="tag">&lt;/faultstring&gt;</span>
+        <span class="tag">&lt;/soap:Fault&gt;</span>
+    <span class="tag">&lt;/soap:Body&gt;</span>
+<span class="tag">&lt;/soap:Envelope&gt;</span></pre>
+
+    <h3>What is WSDL?</h3>
+    <p>WSDL (Web Services Description Language) is an XML file that describes what a SOAP web service offers. It is the instruction manual for the service — telling you what operations exist, what input they need, what output they return, and where the service lives.</p>
+
+    <h3>WSDL Key Sections</h3>
+    <table>
+        <tr><th>Section</th><th>Purpose</th></tr>
+        <tr><td><strong>types</strong></td><td>Defines the data structures used</td></tr>
+        <tr><td><strong>message</strong></td><td>Defines input and output for each operation</td></tr>
+        <tr><td><strong>portType</strong></td><td>Lists all available operations (functions)</td></tr>
+        <tr><td><strong>binding</strong></td><td>Specifies SOAP version and encoding rules</td></tr>
+        <tr><td><strong>service</strong></td><td>The actual URL where the service is hosted</td></tr>
+    </table>
+
+    <div class="cpi-box">
+        <strong>Why SOAP Matters in CPI:</strong> CPI has a dedicated SOAP adapter. You provide the WSDL URL and CPI automatically reads all available operations. SAP S/4HANA and SAP ECC expose many SOAP web services natively. SOAP messages appear as XML in CPI message monitoring.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>SOAP is an XML-based enterprise messaging protocol</li>
+            <li>Every SOAP message has an Envelope containing Header and Body</li>
+            <li>Header is optional — Body is mandatory</li>
+            <li>Fault element appears in Body when an error occurs</li>
+            <li>WSDL is the instruction manual describing the SOAP service</li>
+            <li>portType section in WSDL lists all available operations</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 6 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">6</div>
+        <div class="topic-title">
+            <h2>XPath</h2>
+            <p>The language for navigating and extracting data from XML documents</p>
+        </div>
+    </div>
+
+    <h3>What is XPath?</h3>
+    <p>XPath (XML Path Language) is a syntax for navigating through an XML document and extracting specific values. Think of XML as a tree of data and XPath as the address or path to reach any specific branch or leaf in that tree.</p>
+
+    <div class="analogy">
+        <strong>Analogy:</strong> If XML is a building, XPath is the address. Instead of "123 Main Street, Floor 3, Room 7", you write "/building/floor[3]/room[7]" to find exactly what you need.
+    </div>
+
+    <h3>The XML Tree</h3>
+    <pre><span class="tag">&lt;company&gt;</span>                         <span class="comment">&lt;!-- Level 1: Root --&gt;</span>
+    <span class="tag">&lt;employee</span> <span class="attr">id</span>=<span class="val">"E01"</span><span class="tag">&gt;</span>           <span class="comment">&lt;!-- Level 2 --&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Ahmed<span class="tag">&lt;/name&gt;</span>         <span class="comment">&lt;!-- Level 3 --&gt;</span>
+        <span class="tag">&lt;department&gt;</span>IT<span class="tag">&lt;/department&gt;</span>
+        <span class="tag">&lt;salary&gt;</span>8000<span class="tag">&lt;/salary&gt;</span>
+    <span class="tag">&lt;/employee&gt;</span>
+    <span class="tag">&lt;employee</span> <span class="attr">id</span>=<span class="val">"E02"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Sara<span class="tag">&lt;/name&gt;</span>
+        <span class="tag">&lt;department&gt;</span>HR<span class="tag">&lt;/department&gt;</span>
+        <span class="tag">&lt;salary&gt;</span>9500<span class="tag">&lt;/salary&gt;</span>
+    <span class="tag">&lt;/employee&gt;</span>
+<span class="tag">&lt;/company&gt;</span></pre>
+
+    <h3>Basic XPath Syntax</h3>
+    <table>
+        <tr><th>XPath Expression</th><th>What It Selects</th></tr>
+        <tr><td><code>/company</code></td><td>The root element</td></tr>
+        <tr><td><code>/company/employee</code></td><td>All employee elements</td></tr>
+        <tr><td><code>/company/employee[1]</code></td><td>First employee only (Ahmed)</td></tr>
+        <tr><td><code>/company/employee[2]</code></td><td>Second employee only (Sara)</td></tr>
+        <tr><td><code>/company/employee[1]/name</code></td><td>Ahmed's name element</td></tr>
+        <tr><td><code>/company/employee[2]/salary</code></td><td>Sara's salary = 9500</td></tr>
+    </table>
+
+    <div class="warning-box">
+        <strong>Important:</strong> XPath index starts at 1, not 0. The first item is [1], not [0].
+    </div>
+
+    <h3>Selecting Attributes with @</h3>
+    <table>
+        <tr><th>XPath Expression</th><th>What It Selects</th></tr>
+        <tr><td><code>/company/employee/@id</code></td><td>The id attribute of all employees</td></tr>
+        <tr><td><code>/company/employee[1]/@id</code></td><td>Value = E01</td></tr>
+        <tr><td><code>/item/price/@currency</code></td><td>The currency attribute value = SAR</td></tr>
+    </table>
+
+    <h3>Filtering with Conditions</h3>
+    <table>
+        <tr><th>XPath Expression</th><th>What It Selects</th></tr>
+        <tr><td><code>/company/employee[department='IT']</code></td><td>Employee in IT department</td></tr>
+        <tr><td><code>/company/employee[salary&gt;8000]</code></td><td>Employees with salary above 8000</td></tr>
+        <tr><td><code>/company/employee[name='Sara']/salary</code></td><td>Sara's salary = 9500</td></tr>
+    </table>
+
+    <h3>Double Slash — Search Anywhere</h3>
+    <table>
+        <tr><th>XPath Expression</th><th>What It Selects</th></tr>
+        <tr><td><code>//name</code></td><td>All name elements anywhere in the document</td></tr>
+        <tr><td><code>//employee</code></td><td>All employee elements regardless of depth</td></tr>
+        <tr><td><code>//price[@currency='SAR']</code></td><td>Price elements with currency SAR anywhere</td></tr>
+    </table>
+
+    <h3>Useful XPath Functions</h3>
+    <table>
+        <tr><th>Function</th><th>Purpose</th><th>Example</th></tr>
+        <tr><td><code>text()</code></td><td>Get the text value</td><td><code>/company/employee[1]/name/text()</code> = Ahmed</td></tr>
+        <tr><td><code>count()</code></td><td>Count elements</td><td><code>count(/company/employee)</code> = 2</td></tr>
+        <tr><td><code>contains()</code></td><td>Check if string contains value</td><td><code>contains(/name, 'Ah')</code> = true for Ahmed</td></tr>
+    </table>
+
+    <div class="cpi-box">
+        <strong>Why XPath Matters in CPI:</strong> The Content Based Router in CPI uses XPath to decide which path a message takes. Message mapping uses XPath to extract source values. Groovy scripts use XPath to read XML data. The Filter step uses XPath conditions to allow or block messages.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>XPath navigates XML using path expressions like addresses</li>
+            <li>/ means navigate to a direct child</li>
+            <li>// means search anywhere in the document</li>
+            <li>@ selects an attribute value</li>
+            <li>[n] selects by position — index starts at 1</li>
+            <li>[condition] filters elements by a condition</li>
+            <li>text() extracts the text value of an element</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 7 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">7</div>
+        <div class="topic-title">
+            <h2>XSLT</h2>
+            <p>eXtensible Stylesheet Language Transformations — transform XML to XML</p>
+        </div>
+    </div>
+
+    <h3>What is XSLT?</h3>
+    <p>XSLT (eXtensible Stylesheet Language Transformations) is a language used to transform one XML document into a different XML structure. It takes a source XML, applies transformation rules, and produces an output XML with a different structure.</p>
+
+    <div class="analogy">
+        <strong>Analogy:</strong> Imagine you receive a letter in German but need to send it in English with a different layout. XSLT is the translator and formatter — it reads the original, converts the content, and produces the new version automatically.
+    </div>
+
+    <h3>Why XSLT is Needed</h3>
+    <p>System A and System B both use XML, but their structures are completely different. XSLT transforms System A's XML format into System B's XML format.</p>
+
+    <div class="flow-diagram">Source XML (System A format)
+        ↓
+    [ XSLT Transformation ]
+        ↓
+Target XML (System B format)</div>
+
+    <h3>Simple Example — Renaming Elements</h3>
+    <p><strong>Source XML (from System A):</strong></p>
+    <pre><span class="tag">&lt;order&gt;</span>
+    <span class="tag">&lt;orderNumber&gt;</span>1001<span class="tag">&lt;/orderNumber&gt;</span>
+    <span class="tag">&lt;customerName&gt;</span>Ahmed<span class="tag">&lt;/customerName&gt;</span>
+    <span class="tag">&lt;totalValue&gt;</span>5000<span class="tag">&lt;/totalValue&gt;</span>
+<span class="tag">&lt;/order&gt;</span></pre>
+
+    <p><strong>Target XML needed (by System B):</strong></p>
+    <pre><span class="tag">&lt;purchaseOrder&gt;</span>
+    <span class="tag">&lt;poId&gt;</span>1001<span class="tag">&lt;/poId&gt;</span>
+    <span class="tag">&lt;buyer&gt;</span>Ahmed<span class="tag">&lt;/buyer&gt;</span>
+    <span class="tag">&lt;amount&gt;</span>5000<span class="tag">&lt;/amount&gt;</span>
+<span class="tag">&lt;/purchaseOrder&gt;</span></pre>
+
+    <p><strong>XSLT to transform it:</strong></p>
+    <pre><span class="tag">&lt;xsl:stylesheet</span> <span class="attr">version</span>=<span class="val">"1.0"</span>
+    <span class="attr">xmlns:xsl</span>=<span class="val">"http://www.w3.org/1999/XSL/Transform"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;xsl:template</span> <span class="attr">match</span>=<span class="val">"/"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;purchaseOrder&gt;</span>
+            <span class="tag">&lt;poId&gt;</span>
+                <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="val">"/order/orderNumber"</span><span class="tag">/&gt;</span>
+            <span class="tag">&lt;/poId&gt;</span>
+            <span class="tag">&lt;buyer&gt;</span>
+                <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="val">"/order/customerName"</span><span class="tag">/&gt;</span>
+            <span class="tag">&lt;/buyer&gt;</span>
+            <span class="tag">&lt;amount&gt;</span>
+                <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="val">"/order/totalValue"</span><span class="tag">/&gt;</span>
+            <span class="tag">&lt;/amount&gt;</span>
+        <span class="tag">&lt;/purchaseOrder&gt;</span>
+    <span class="tag">&lt;/xsl:template&gt;</span>
+
+<span class="tag">&lt;/xsl:stylesheet&gt;</span></pre>
+
+    <h3>Key XSLT Elements</h3>
+    <table>
+        <tr><th>Element</th><th>Purpose</th></tr>
+        <tr><td><code>&lt;xsl:stylesheet&gt;</code></td><td>Root element — the container for the entire XSLT</td></tr>
+        <tr><td><code>&lt;xsl:template match="/"&gt;</code></td><td>Matches the root of the source XML and starts transformation</td></tr>
+        <tr><td><code>&lt;xsl:value-of select="..."&gt;</code></td><td>Reads a value from the source XML using XPath</td></tr>
+        <tr><td><code>&lt;xsl:for-each select="..."&gt;</code></td><td>Loops through multiple elements (like a list of items)</td></tr>
+        <tr><td><code>&lt;xsl:if test="..."&gt;</code></td><td>Conditional — only outputs if condition is true</td></tr>
+        <tr><td><code>&lt;xsl:choose&gt;</code></td><td>Like if/else — multiple conditions</td></tr>
+    </table>
+
+    <h3>Looping Example — Multiple Items</h3>
+    <pre><span class="tag">&lt;xsl:for-each</span> <span class="attr">select</span>=<span class="val">"/invoice/items/item"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;lineItem&gt;</span>
+        <span class="tag">&lt;product&gt;</span>
+            <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="val">"itemName"</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;/product&gt;</span>
+        <span class="tag">&lt;qty&gt;</span>
+            <span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="val">"quantity"</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;/qty&gt;</span>
+    <span class="tag">&lt;/lineItem&gt;</span>
+<span class="tag">&lt;/xsl:for-each&gt;</span></pre>
+
+    <div class="cpi-box">
+        <strong>Why XSLT Matters in CPI:</strong> CPI has a dedicated XSLT Mapping step inside iFlows. When source and target XML structures are very different, XSLT handles the transformation. It is more powerful than simple message mapping for complex XML restructuring scenarios.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>XSLT transforms one XML structure into a different XML structure</li>
+            <li>It uses XPath expressions to read values from source XML</li>
+            <li>xsl:template defines the transformation rules</li>
+            <li>xsl:value-of extracts a value from the source</li>
+            <li>xsl:for-each loops through repeated elements</li>
+            <li>xsl:if adds conditional logic to the transformation</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 8 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">8</div>
+        <div class="topic-title">
+            <h2>Groovy Scripting</h2>
+            <p>Writing custom logic inside SAP CPI iFlows</p>
+        </div>
+    </div>
+
+    <h3>What is Groovy?</h3>
+    <p>Groovy is a scripting language that runs on the Java Virtual Machine (JVM). It is simpler than Java, supports dynamic typing, and can use any Java library. In SAP CPI, Groovy is used to write custom logic inside iFlows that cannot be done with standard mapping steps.</p>
+
+    <h3>Groovy vs Java — Key Differences</h3>
+    <table>
+        <tr><th>Feature</th><th>Java</th><th>Groovy</th></tr>
+        <tr><td>Type declaration</td><td>Mandatory: int age = 30;</td><td>Optional: def age = 30</td></tr>
+        <tr><td>Semicolons</td><td>Required</td><td>Optional</td></tr>
+        <tr><td>String interpolation</td><td>Not built-in</td><td>Built-in: "Hello ${name}"</td></tr>
+        <tr><td>Runs on</td><td>JVM</td><td>JVM</td></tr>
+        <tr><td>Use in CPI</td><td>Not used directly</td><td>Script step in iFlows</td></tr>
+    </table>
+
+    <h3>Groovy Basics</h3>
+    <pre><span class="comment">// Variables — no type needed, use 'def'</span>
+def name = <span class="string">"Ahmed"</span>
+def age = <span class="number">30</span>
+def isActive = <span class="bool">true</span>
+
+<span class="comment">// String interpolation — use ${} inside double quotes</span>
+println <span class="string">"Hello, ${name}! You are ${age} years old."</span>
+
+<span class="comment">// Lists</span>
+def fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+fruits.each { println it }
+
+<span class="comment">// Maps (like JSON objects)</span>
+def person = [name: <span class="string">"Sara"</span>, city: <span class="string">"Riyadh"</span>]
+println person.name</pre>
+
+    <h3>Groovy Script Structure in CPI</h3>
+    <p>Every Groovy script in CPI follows this structure:</p>
+    <pre><span class="comment">// Required import for CPI message handling</span>
+import com.sap.gateway.ip.core.customdev.util.Message
+
+<span class="comment">// The main function CPI calls — must always exist</span>
+def Message processData(Message message) {
+
+    <span class="comment">// Read the message body</span>
+    def body = message.getBody(String)
+
+    <span class="comment">// Read a message property</span>
+    def orderId = message.getProperty(<span class="string">"orderId"</span>)
+
+    <span class="comment">// Read a message header</span>
+    def contentType = message.getHeader(<span class="string">"Content-Type"</span>, String)
+
+    <span class="comment">// Modify the body</span>
+    def newBody = <span class="string">"Modified: ${body}"</span>
+    message.setBody(newBody)
+
+    <span class="comment">// Set a property</span>
+    message.setProperty(<span class="string">"status"</span>, <span class="string">"processed"</span>)
+
+    <span class="comment">// Always return the message</span>
+    return message
+}</pre>
+
+    <h3>Reading and Writing the Message Body</h3>
+    <pre><span class="comment">// Read body as String</span>
+def body = message.getBody(String)
+println body
+
+<span class="comment">// Set a new body</span>
+message.setBody(<span class="string">"&lt;status&gt;success&lt;/status&gt;"</span>)</pre>
+
+    <h3>Working with Headers and Properties</h3>
+    <table>
+        <tr><th>Operation</th><th>Code</th></tr>
+        <tr><td>Read a header</td><td><code>message.getHeader("name", String)</code></td></tr>
+        <tr><td>Set a header</td><td><code>message.setHeader("name", "value")</code></td></tr>
+        <tr><td>Read a property</td><td><code>message.getProperty("name")</code></td></tr>
+        <tr><td>Set a property</td><td><code>message.setProperty("name", "value")</code></td></tr>
+        <tr><td>Read body</td><td><code>message.getBody(String)</code></td></tr>
+        <tr><td>Set body</td><td><code>message.setBody("new content")</code></td></tr>
+    </table>
+
+    <h3>Conditional Logic</h3>
+    <pre><span class="comment">// if / else</span>
+def amount = <span class="number">5000</span>
+
+if (amount > <span class="number">3000</span>) {
+    message.setProperty(<span class="string">"category"</span>, <span class="string">"high-value"</span>)
+} else {
+    message.setProperty(<span class="string">"category"</span>, <span class="string">"standard"</span>)
+}</pre>
+
+    <h3>Logging in Groovy — for Debugging</h3>
+    <pre>import groovy.util.logging.*
+
+<span class="comment">// Write to CPI message processing log</span>
+def messageLog = messageLogFactory.getMessageLog(message)
+messageLog.addAttachmentAsString(<span class="string">"Debug Info"</span>, <span class="string">"Order received: ${orderId}"</span>, <span class="string">"text/plain"</span>)</pre>
+
+    <div class="cpi-box">
+        <strong>Why Groovy Matters in CPI:</strong> When standard CPI steps (Content Modifier, Message Mapping) are not enough, Groovy fills the gap. Common uses: dynamic value calculation, conditional logic, reading/writing headers and properties, custom error handling, parsing JSON payloads, and calling utility functions.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>Groovy is a JVM scripting language — simpler than Java</li>
+            <li>Use def to declare variables — no type needed</li>
+            <li>Every CPI script must have a processData(Message message) function</li>
+            <li>Read the body with message.getBody(String)</li>
+            <li>Set the body with message.setBody("content")</li>
+            <li>Use getProperty/setProperty for message properties</li>
+            <li>Always return the message at the end of the function</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 9 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">9</div>
+        <div class="topic-title">
+            <h2>SAP BTP Basics</h2>
+            <p>SAP Business Technology Platform — the home of SAP CPI</p>
+        </div>
+    </div>
+
+    <h3>What is SAP BTP?</h3>
+    <p>SAP BTP (Business Technology Platform) is SAP's cloud platform that provides tools and services for building, extending, and integrating enterprise applications. SAP CPI (Integration Suite) is one of the services that lives inside SAP BTP.</p>
+
+    <div class="analogy">
+        <strong>Analogy:</strong> Think of SAP BTP as a shopping mall. SAP Integration Suite (CPI) is one shop inside that mall. The mall provides the building, electricity, security, and infrastructure — the shops provide specific services.
+    </div>
+
+    <h3>SAP BTP Main Services</h3>
+    <table>
+        <tr><th>Service</th><th>Purpose</th></tr>
+        <tr><td><strong>Integration Suite (CPI)</strong></td><td>Connect and integrate systems</td></tr>
+        <tr><td><strong>Extension Suite</strong></td><td>Build custom apps that extend SAP systems</td></tr>
+        <tr><td><strong>Data and Analytics</strong></td><td>Data management and reporting</td></tr>
+        <tr><td><strong>AI Services</strong></td><td>Machine learning and AI capabilities</td></tr>
+        <tr><td><strong>HANA Cloud</strong></td><td>Cloud database service</td></tr>
+    </table>
+
+    <h3>BTP Account Structure</h3>
+    <div class="flow-diagram">Global Account (your company's top-level BTP account)
+│
+├── Subaccount (Development environment)
+│       └── Space → Services, Applications
+│
+├── Subaccount (Testing environment)
+│       └── Space → Services, Applications
+│
+└── Subaccount (Production environment)
+        └── Space → Services, Applications</div>
+
+    <table>
+        <tr><th>Level</th><th>Description</th></tr>
+        <tr><td><strong>Global Account</strong></td><td>The top-level account for your company in BTP</td></tr>
+        <tr><td><strong>Subaccount</strong></td><td>Isolated environments (Dev, Test, Prod)</td></tr>
+        <tr><td><strong>Space</strong></td><td>Further isolation within a subaccount</td></tr>
+        <tr><td><strong>Service Instance</strong></td><td>An activated service like Integration Suite</td></tr>
+    </table>
+
+    <h3>BTP Cockpit — The Control Panel</h3>
+    <p>The BTP Cockpit is the web-based admin interface where you manage everything.</p>
+    <table>
+        <tr><th>What You Do in the Cockpit</th><th>Description</th></tr>
+        <tr><td>Create subaccounts</td><td>Set up Dev, Test, Prod environments</td></tr>
+        <tr><td>Activate services</td><td>Enable Integration Suite, HANA Cloud, etc.</td></tr>
+        <tr><td>Manage users</td><td>Add users and assign roles</td></tr>
+        <tr><td>Manage entitlements</td><td>Control which services each subaccount can use</td></tr>
+        <tr><td>View service instances</td><td>See all running services and their status</td></tr>
+    </table>
+
+    <h3>BTP Roles and Users</h3>
+    <p>BTP uses role-based access control. Common roles for CPI:</p>
+    <table>
+        <tr><th>Role</th><th>What They Can Do</th></tr>
+        <tr><td><strong>IntegrationDeveloper</strong></td><td>Build and deploy iFlows</td></tr>
+        <tr><td><strong>IntegrationOperator</strong></td><td>Monitor and operate integrations</td></tr>
+        <tr><td><strong>Administrator</strong></td><td>Full access to manage everything</td></tr>
+    </table>
+
+    <h3>Getting a Free BTP Trial Account</h3>
+    <ol style="padding-left:20px; color:#444; line-height:2.2;">
+        <li>Go to <strong>account.hanatrial.ondemand.com</strong></li>
+        <li>Register with your email address</li>
+        <li>Activate your trial account</li>
+        <li>Log into the BTP Cockpit</li>
+        <li>Navigate to your trial subaccount</li>
+        <li>Go to Service Marketplace and activate Integration Suite</li>
+        <li>Open Integration Suite and start building iFlows</li>
+    </ol>
+
+    <h3>How Integration Suite Fits Inside BTP</h3>
+    <div class="flow-diagram">SAP BTP Global Account
+└── Subaccount (Trial or Production)
+    └── Integration Suite (CPI) activated as a service
+        ├── Integration Flows (iFlows)
+        ├── API Management (APIM)
+        ├── Event Mesh
+        ├── Open Connectors
+        └── Trading Partner Management</div>
+
+    <div class="cpi-box">
+        <strong>Why BTP Basics Matter:</strong> Before you can build any iFlow, you need to navigate BTP to find Integration Suite. You need to understand subaccounts for deploying to different environments (Dev, Test, Prod). User roles control what you can see and do inside Integration Suite.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>SAP BTP is the cloud platform — Integration Suite (CPI) lives inside it</li>
+            <li>Global Account → Subaccounts → Spaces → Service Instances</li>
+            <li>BTP Cockpit is the web interface for managing everything</li>
+            <li>Subaccounts separate Dev, Test, and Production environments</li>
+            <li>Users need roles like IntegrationDeveloper to work with CPI</li>
+            <li>Free trial available at account.hanatrial.ondemand.com</li>
+        </ul>
+    </div>
+</div>
+
+<!-- TOPIC 10 -->
+<div class="topic-card">
+    <div class="topic-header">
+        <div class="topic-number">10</div>
+        <div class="topic-title">
+            <h2>OData Basics</h2>
+            <p>SAP's REST standard for accessing S/4HANA and Business Suite data</p>
+        </div>
+    </div>
+
+    <h3>What is OData?</h3>
+    <p>OData (Open Data Protocol) is a REST-based protocol created by Microsoft and heavily adopted by SAP. It is a standardized way to expose and consume data from SAP systems like S/4HANA, SuccessFactors, and Ariba through REST-style APIs.</p>
+
+    <div class="analogy">
+        <strong>Analogy:</strong> Think of OData as a very smart REST API that comes with built-in features — filtering, sorting, paging, and relationship navigation — all through the URL itself, without needing custom code on the server.
+    </div>
+
+    <h3>OData vs Regular REST</h3>
+    <table>
+        <tr><th>Feature</th><th>Regular REST</th><th>OData</th></tr>
+        <tr><td>Protocol</td><td>Custom per API</td><td>Standardized</td></tr>
+        <tr><td>Filtering</td><td>Custom implementation</td><td>Built-in via URL: $filter</td></tr>
+        <tr><td>Sorting</td><td>Custom implementation</td><td>Built-in via URL: $orderby</td></tr>
+        <tr><td>Paging</td><td>Custom implementation</td><td>Built-in via URL: $top, $skip</td></tr>
+        <tr><td>Metadata</td><td>No standard</td><td>Built-in: $metadata endpoint</td></tr>
+        <tr><td>Used in</td><td>General APIs</td><td>SAP S/4HANA, SuccessFactors, Ariba</td></tr>
+    </table>
+
+    <h3>OData URL Structure</h3>
+    <pre>https://host/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner
+│                           │                      │
+│                           │                      └── Entity Set (the data collection)
+│                           └── Service Name
+└── SAP OData base path</pre>
+
+    <h3>OData Query Options — Filtering with URL</h3>
+    <p>OData lets you filter, sort, and page data directly in the URL:</p>
+    <table>
+        <tr><th>Query Option</th><th>Purpose</th><th>Example</th></tr>
+        <tr><td><code>$filter</code></td><td>Filter records</td><td><code>?$filter=Country eq 'SA'</code></td></tr>
+        <tr><td><code>$select</code></td><td>Choose specific fields</td><td><code>?$select=BusinessPartner,Name</code></td></tr>
+        <tr><td><code>$top</code></td><td>Limit number of records</td><td><code>?$top=10</code></td></tr>
+        <tr><td><code>$skip</code></td><td>Skip records (for paging)</td><td><code>?$skip=20</code></td></tr>
+        <tr><td><code>$orderby</code></td><td>Sort results</td><td><code>?$orderby=Name asc</code></td></tr>
+        <tr><td><code>$expand</code></td><td>Include related data</td><td><code>?$expand=to_Address</code></td></tr>
+        <tr><td><code>$format</code></td><td>Response format</td><td><code>?$format=json</code></td></tr>
+    </table>
+
+    <h3>OData Request Examples</h3>
+    <pre><span class="comment">// Get all Business Partners</span>
+GET /A_BusinessPartner
+
+<span class="comment">// Get one specific Business Partner</span>
+GET /A_BusinessPartner('BP001')
+
+<span class="comment">// Get Business Partners from Saudi Arabia only</span>
+GET /A_BusinessPartner?$filter=Country eq 'SA'
+
+<span class="comment">// Get top 5 Business Partners, only name and ID fields</span>
+GET /A_BusinessPartner?$top=5&amp;$select=BusinessPartner,BusinessPartnerFullName
+
+<span class="comment">// Get Business Partners sorted by name, response in JSON</span>
+GET /A_BusinessPartner?$orderby=BusinessPartnerFullName asc&amp;$format=json</pre>
+
+    <h3>OData Metadata</h3>
+    <p>Every OData service has a $metadata endpoint that describes all available entity sets, fields, and relationships. It is the WSDL equivalent for OData.</p>
+    <pre><span class="comment">// Access metadata to see all available entities and fields</span>
+GET /API_BUSINESS_PARTNER/$metadata</pre>
+
+    <h3>OData HTTP Methods</h3>
+    <table>
+        <tr><th>Method</th><th>OData Action</th><th>Example</th></tr>
+        <tr><td>GET</td><td>Read data</td><td>Read a sales order</td></tr>
+        <tr><td>POST</td><td>Create new record</td><td>Create a business partner</td></tr>
+        <tr><td>PUT</td><td>Full update</td><td>Replace entire record</td></tr>
+        <tr><td>PATCH</td><td>Partial update</td><td>Update only specific fields</td></tr>
+        <tr><td>DELETE</td><td>Delete record</td><td>Delete a sales order item</td></tr>
+    </table>
+
+    <div class="info-box">
+        <strong>CSRF Token:</strong> SAP OData services require a CSRF (Cross-Site Request Forgery) token for write operations (POST, PUT, PATCH, DELETE). You first call GET with header <code>x-csrf-token: fetch</code> to get the token, then include it in your write request header.
+    </div>
+
+    <h3>Common SAP OData APIs</h3>
+    <table>
+        <tr><th>API Name</th><th>Purpose</th></tr>
+        <tr><td>API_BUSINESS_PARTNER</td><td>Manage business partners / customers / vendors</td></tr>
+        <tr><td>API_SALES_ORDER_SRV</td><td>Create and manage sales orders</td></tr>
+        <tr><td>API_PURCHASEORDER_PROCESS_SRV</td><td>Manage purchase orders</td></tr>
+        <tr><td>API_MATERIAL_DOCUMENT_SRV</td><td>Goods movements and material documents</td></tr>
+    </table>
+
+    <div class="cpi-box">
+        <strong>Why OData Matters in CPI:</strong> CPI has a dedicated OData adapter for connecting to SAP S/4HANA. You can read master data (customers, materials) and transactional data (orders, invoices) from S/4HANA using OData. The OData adapter handles CSRF token fetching automatically. Most real-world CPI scenarios involve reading from or writing to S/4HANA via OData.
+    </div>
+
+    <div class="summary-box">
+        <h3>Key Takeaways</h3>
+        <ul>
+            <li>OData is a standardized REST protocol adopted heavily by SAP</li>
+            <li>It adds built-in filtering, sorting, and paging via URL query options</li>
+            <li>$filter, $select, $top, $skip, $orderby, $expand are key query options</li>
+            <li>$metadata endpoint describes all available data in the service</li>
+            <li>Write operations (POST/PUT/PATCH/DELETE) require a CSRF token</li>
+            <li>CPI has a dedicated OData adapter for connecting to S/4HANA</li>
+        </ul>
+    </div>
+</div>
+
+</div><!-- end container -->
+
+<div class="footer">
+    SAP CPI Prerequisites Guide &nbsp;|&nbsp; All 10 Topics Covered &nbsp;|&nbsp; Beginner Friendly
+    <br>
+    After mastering these prerequisites, start with: <strong>SAP CPI for Beginners with Hands-on — Vishal Saxena (Udemy Business)</strong>
+</div>
+
+</body>
+</html>
